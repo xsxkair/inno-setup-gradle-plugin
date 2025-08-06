@@ -1,0 +1,45 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+group = 'org.xsx'
+version = '0.0.10'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation localGroovy()
+    testImplementation gradleTestKit()
+    testImplementation 'junit:junit:4.13.2'
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'org.xsx.inno-setup-gradle-plugin'
+            implementationClass = 'org.xsx.GreetingPlugin'
+        }
+    }
+}
+
+// 配置发布（可选）
+publishing {
+    publications {
+        hello(MavenPublication) {
+            // 插件的组ID，建议设置为插件的包名
+            groupId = project.group
+            // 翻译过来是 工件ID，我的理解是插件的名字
+            artifactId = 'inno-setup-gradle-plugin'
+            version = project.version
+            // 组件类型，我们的插件其实就是Java组件
+            from components.java
+        }
+    }
+
+    repositories {
+        mavenLocal()
+    }
+}
